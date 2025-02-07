@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule an Interview</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="schedule.html">Schedule an Interview</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Schedule an Interview</h1>
+        <form>
+            <label for="job-type">Job Type:</label>
+            <select id="job-type" name="job-type">
+                <option>Software Engineer</option>
+                <option>Product Manager</option>
+                <option>Data Scientist</option>
+            </select>
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option>System Design</option>
+                <option>Behavioral</option>
+                <option>Coding</option>
+                <option>Case Study</option>
+            </select>
+            <label for="time-slot">Time Slot:</label>
+            <input type="datetime-local" id="time-slot" name="time-slot">
+            <button type="submit">Schedule</button>
+        </form>
+    </main>
+</body>
+</html>
