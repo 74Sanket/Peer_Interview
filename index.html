@@ -3,23 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeerLens</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Peer-to-Peer Mock Interviews</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="resources.html">Resources</a></li>
-                <li><a href="schedule.html">Schedule an Interview</a></li>
-            </ul>
-        </nav>
+        <h1>Peer-to-Peer Mock Interviews</h1>
+        <p>Practice real interviews with peers & get feedback.</p>
+        <a href="#signup" class="btn">Get Started</a>
     </header>
-    <main>
-        <h1>Welcome to PeerLens</h1>
-        <p>A peer-to-peer mock interview platform to help you ace your job interviews.</p>
-    </main>
+    
+    <section id="features">
+        <h2>Why Join?</h2>
+        <ul>
+            <li>Match with peers in your industry</li>
+            <li>Receive constructive feedback</li>
+            <li>Improve your confidence & skills</li>
+        </ul>
+    </section>
+    
+    <section id="signup">
+        <h2>Sign Up for Early Access</h2>
+        <form>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button type="submit" id="submit-btn">Join Now</button>
+        </form>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Peer Interview Platform. All rights reserved.</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+</head>
+<body>
+  <h1>Sign Up for Updates</h1>
+  <form name="signup" method="POST" data-netlify="true" netlify>
+    <input type="hidden" name="form-name" value="signup">
+    <label for="email">Email:</label>
+    <input type="email" name="email" required>
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <div id="thank-you-message" style="display:none;">
+    <h2>Thank you for signing up!</h2>
+  </div>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+
+      fetch('/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(() => {
+        form.style.display = 'none';
+        document.getElementById('thank-you-message').style.display = 'block';
+      })
+      .catch(error => alert('Something went wrong. Please try again later.'));
+    });
+  </script>
 </body>
 </html>
