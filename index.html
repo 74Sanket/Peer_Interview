@@ -8,6 +8,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
     <header>
@@ -18,6 +19,7 @@
                 <li><a href="resources.html">Resources</a></li>
                 <li><a href="schedule.html">Schedule an Interview</a></li>
                 <li><a href="mentors.html">Expert Help</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
             </ul>
         </nav>
     </header>
@@ -40,6 +42,14 @@
             <button onclick="emailSignUp()">Sign Up</button>
             <button onclick="emailLogin()">Log In</button>
         </section>
+        <section id="gamification">
+            <h2>Your Progress</h2>
+            <p>Level: <span id="userLevel">1</span></p>
+            <p>XP: <span id="userXP">0</span></p>
+            <progress id="xpBar" value="0" max="100"></progress>
+            <h3>Achievements</h3>
+            <ul id="achievements"></ul>
+        </section>
     </main>
     <script>
         // Firebase Config (Replace with your actual Firebase config)
@@ -48,28 +58,28 @@
             authDomain: "peerlens-7a767.firebaseapp.com",
             projectId: "peerlens-7a767",
             storageBucket: "peerlens-7a767.appspot.com",
-            messagingSenderId: "1:474045248579:android:fc08a673bd7d93d09f50f6",
-
+            messagingSenderId: "474045248579",
+            appId: "1:474045248579:android:fc08a673bd7d93d09f50f6"
         };
         
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
         
-        // Google Sign-In
         function googleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
                     console.log("User signed in:", result.user);
                     alert("Welcome, " + result.user.displayName);
+                    initializeUser(result.user.uid);
                 })
                 .catch((error) => {
                     console.error("Error signing in:", error);
                 });
         }
         
-        // Email Sign-Up
         function emailSignUp() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -77,13 +87,13 @@
                 .then((userCredential) => {
                     console.log("User created:", userCredential.user);
                     alert("Account created successfully!");
+                    initializeUser(userCredential.user.uid);
                 })
                 .catch((error) => {
                     console.error("Error signing up:", error.message);
                 });
         }
         
-        // Email Login
         function emailLogin() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -91,10 +101,31 @@
                 .then((userCredential) => {
                     console.log("User signed in:", userCredential.user);
                     alert("Welcome back!");
+                    loadUserData(userCredential.user.uid);
                 })
                 .catch((error) => {
                     console.error("Error logging in:", error.message);
                 });
+        }
+        
+        function initializeUser(userId) {
+            db.collection("users").doc(userId).set({
+                level: 1,
+                xp: 0,
+                achievements: []
+            });
+        }
+        
+        function loadUserData(userId) {
+            db.collection("users").doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById("userLevel").textContent = data.level;
+                    document.getElementById("userXP").textContent = data.xp;
+                    document.getElementById("xpBar").value = data.xp % 100;
+                    document.getElementById("achievements").innerHTML = data.achievements.map(a => `<li>${a}</li>`).join('');
+                }
+            });
         }
     </script>
 </body>
